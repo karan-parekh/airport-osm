@@ -7,10 +7,10 @@ from unittest.mock import Mock
 
 import geopandas as gpd
 import pytest
-
-from airport_osm import AirportOSM, AerowayRef
-from airport_osm.errors import AirportOSMError, GraphError
 from networkx import MultiDiGraph as Graph
+
+from airport_osm import AerowayRef, AirportOSM
+from airport_osm.errors import AirportOSMError, GraphError
 
 
 class TestGdfAndGraphProperties:
@@ -32,19 +32,18 @@ class TestGdfAndGraphProperties:
     def test_features_gdf_args(self, mock_gdf: Mock):
         airport = AirportOSM(icao_code="ABCD")
         airport.gdf
-        mock_gdf.assert_called_once_with(
-            "ABCD",
-            {
-                "aeroway": [
-                    "aerodrome",
-                    "runway",
-                    "taxiway",
-                    "gate",
-                    "holding_position",
-                    "parking_position",
-                ]
-            },
-        )
+        tags = {
+            "aeroway": [
+                "aerodrome",
+                "runway",
+                "taxiway",
+                "gate",
+                "holding_position",
+                "parking_position",
+            ],
+            "proposed:aeroway": ["taxiway"],
+        }
+        mock_gdf.assert_called_once_with("ABCD", tags)
 
     def test_G_success(self, mock_graph: Mock):
         airport = AirportOSM(icao_code="YMML")
@@ -62,7 +61,9 @@ class TestGdfAndGraphProperties:
     def test_graph_args(self, mock_graph: Mock):
         airport = AirportOSM(icao_code="ABCD")
         airport.G
-        custom_filter = '["aeroway"~"aerodrome|runway|taxiway|gate|holding_position|parking_position"]'
+        current_aeroways = '["aeroway"~"aerodrome|runway|taxiway|gate|holding_position|parking_position"]'
+        proposed_aeroways = '["proposed:aeroway"~"taxiway"]'
+        custom_filter = [current_aeroways, proposed_aeroways]
         mock_graph.assert_called_once_with(
             "ABCD", custom_filter=custom_filter, simplify=False
         )
