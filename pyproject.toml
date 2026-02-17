@@ -1,0 +1,27 @@
+[project]
+name = "airport-osm"
+version = "0.1.0"
+description = "Thin wrapper around OSMnx for generating taxi instructions for aiports"
+readme = "README.md"
+authors = [
+    { name = "Karan Parekh", email = "karanparekh501@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "osmnx>=2.0.7",
+    "pydantic>=2.12.5",
+]
+
+[dependency-groups]
+dev = [
+    "isort>=7.0.0",
+    "ruff>=0.15.0",
+    "pytest>=9.0.2",
+]
+
+[project.scripts]
+airport-osm = "airport_osm:main"
+
+[build-system]
+requires = ["uv_build>=0.9.21,<0.10.0"]
+build-backend = "uv_build"
