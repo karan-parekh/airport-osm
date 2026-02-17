@@ -16,9 +16,9 @@ from geopandas import GeoDataFrame
 from networkx import MultiDiGraph as Graph
 from pydantic import BaseModel
 
-from utils.missing_refs import add_missing_refs
-from utils.turn_instructions import generate_turn_instructions
-from utils.nearest_point import nearest_parking_position, nearest_holding_position
+from .utils.missing_refs import add_missing_refs
+from .utils.turn_instructions import generate_turn_instructions
+from .utils.nearest_point import nearest_parking_position, nearest_holding_position
 
 from .errors import AirportOSMError, GraphError
 
@@ -204,6 +204,3 @@ class AirportOSM:
     def _is_icao_code(code: str) -> bool:
         pattern = r"^[A-Z]{4}$"
         return bool(re.match(pattern, code))
-
-
-__all__ = ["AirportOSM", "AerowayRef", "AEROWAY_TYPE"]
