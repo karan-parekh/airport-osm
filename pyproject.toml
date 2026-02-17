@@ -1,6 +1,6 @@
 [project]
 name = "airport-osm"
-version = "0.1.0"
+version = "0.1.1"
 description = "Thin wrapper around OSMnx for generating taxi instructions for aiports"
 readme = "README.md"
 authors = [
